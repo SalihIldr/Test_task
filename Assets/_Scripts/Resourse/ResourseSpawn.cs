@@ -4,19 +4,20 @@ using UnityEngine;
 
 public class ResourseSpawn : MonoBehaviour
 {
-    [SerializeField] private int _startSpawnResourse = 5;
+    [SerializeField] private int _startSpawnResourse = 4;
     [SerializeField] private float _areaSpawn = 4.7f;
 
     private List<Resourse> _resourses = new List<Resourse>();
-    private WaitForSeconds _waitSecondSpawn;
-   
+    private WaitForSeconds _waitSecondSpawn; 
+    
+    public List<Resourse> Resourses => _resourses;
 
     private void Start()
     {
-        _waitSecondSpawn = new WaitForSeconds(2);
+        _waitSecondSpawn = new WaitForSeconds(1);
         DetectResourseObject();
 
-        for (int i = 0; i < _startSpawnResourse; i++)
+        for (int i = 0; i < _startSpawnResourse-1; i++)
         {
             _resourses[i].Spawn(new Vector2(DetectRandomValue(), DetectRandomValue()));           
         }
@@ -50,7 +51,6 @@ public class ResourseSpawn : MonoBehaviour
             _resourses.Add(resourseObject);
         }
     }
-
     private IEnumerator Spawn()
     {       
         while (true)
@@ -60,6 +60,7 @@ public class ResourseSpawn : MonoBehaviour
                 if (resours.gameObject.activeSelf == false)
                 {
                     resours.Spawn(new Vector2(DetectRandomValue(), DetectRandomValue()));
+                    resours.Collected += HideResourse;
                     break;
                 }                   
             }
